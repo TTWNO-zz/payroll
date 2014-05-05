@@ -1,0 +1,61 @@
+*{
+	/* applys to all elements */
+	padding:0px;
+	margin:0px;
+}
+.red{
+	color:#CB0000;
+}
+#website{
+	/*add backgorund here*/
+	width:100%;
+	height:100%;
+}
+textarea{
+	max-width:300px;
+	min-width:300px;
+	max-height:75px;
+	min-height:75px;
+}
+#stuff{
+	padding:45px;
+	margin-left:5%;
+	margin-right:5%;
+	background:#F0F0F0;
+	min-height:300px;
+	min-width:75%;
+	position:absolute;
+	border-bottom-right-radius:20px;
+	border-bottom-left-radius:20px;
+	border-bottom:1px solid black;
+	border-right:1px solid black;
+	border-left:1px solid black;
+	border-top:none;
+}
+#stuff > *{
+	/* applys to eveything inside #suff div */
+	padding:10px;
+}
+.bigButton{
+	height:75px;
+	width:75px;
+}
+#question{
+	/* #IN, $OUT's parent */
+	min-width:200px;
+	min-height:75px;
+}
+#IN, #OUT{
+	position:absolute;
+	padding:10px;
+	font-size:40px;
+}
+#IN{
+	left:15%;
+}
+#OUT{
+	right:15%;
+}
+[type="submit"]{
+	padding:2px;
+}

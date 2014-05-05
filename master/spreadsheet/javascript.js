@@ -1,0 +1,34 @@
+$(document).ready(function(){
+	$("#refresh").click(function(){
+		$.post("server.php",{
+			date:$("#date").val(),
+			ab:$("select option:selected").val(),
+			name:$("#name").val(),
+			dm:$("#debugMode:checked").val()
+			},function(data){
+			alert("refrshed");
+			$("#tb").html(data);
+		});
+	});
+	$("select").click(function(){
+		if ($(this).val() != "All"){
+                $("#date").removeAttr('disabled');
+            }
+        else{
+			$("#date").attr({
+				'disabled':'disabled'
+			});
+			$.get("date.php",{},function(data){
+					$("#date").val(data);
+			});
+        }
+	});
+	$("#email").click(function(){
+		$.post("email.php",{
+				email:$("#Iemail").val(),
+				message:$("#tb").html()
+			},function(data){
+			alert(data);
+		});
+	});
+});
