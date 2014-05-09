@@ -1,3 +1,5 @@
+$button-clicked-color: #939393;
+$button-padding: 10px;
 *{
 	/* applys to all elements */
 	padding:0px;
@@ -43,6 +45,9 @@ textarea{
 	height:75px;
 	width:75px;
 }
+label.labelButton{
+	font-size:10px;
+}
 #question{
 	/* #IN, $OUT's parent */
 	min-width:200px;
@@ -68,8 +73,8 @@ textarea{
   we will use just the label to create pushbutton effect
 */
 input[type=radio] {
-    display:none; 
-    margin:10px;
+	display:none; 
+	margin:10px;
 }
  
 /*
@@ -77,17 +82,16 @@ input[type=radio] {
   Add some margin, padding to label
 */
 input[type=radio] + label {
-    display:inline-block;
-    margin:-2px;
-    padding: 4px 12px;
-    background-color: #e7e7e7;
-    border-color: #ddd;
+	display:inline-block;
+	margin:-2px;
+	background-color: #e7e7e7;
+	border-color: #ddd;
 }
 /*
  Change background color for label next to checked radio button
  to make it look like highlighted button
 */
 input[type=radio]:checked + label { 
-   background-image: none;
-    background-color:#939393;
+	background-image: none;
+	background-color:$button-clicked-color;
 }

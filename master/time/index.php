@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <?php
 	// ini_set("display_errors",0);
-	require '../../php/mysql.php';
-	require '../../php/payrol/vars.php';
-	require '../../php/validString.php';
-	require '../../php/debug.php';
-	require '../../php/parse/parseMySQL.php';
-	require '../../php/timezone.php';
+	require '../../../../php/vars.php';
+	require "$root/php/mysql.php";
+	require "$root/php/payrol/vars.php";
+	require "$root/php/validString.php";
+	require "$root/php/debug.php";
+	require "$root/php/parse/parseMySQL.php";
+	require "$root/php/timezone.php";
 
 	if(isset($_GET['d'])){
 		if(is_numeric($_GET['d'])){
@@ -77,11 +78,12 @@
 								SUM(`minutesIN`) as mi,
 								SUM(`minutesOUT`) as mo,
 								SUM(`hoursIN`) as hi,
-								SUM(`hoursOUT`) as ho
+								SUM(`hoursOUT`) as ho,
+								`notes` as notes
 							FROM `$name`
 							GROUP BY d");
 				$parseSQL->setResult($db->getResult());
-				$e = $parseSQL->toHTML("mi","mo","d","hi","ho");
+				$e = $parseSQL->toHTML("mi","mo","d","hi","ho","notes");
 				echo "$e";
 				break;
 			default:

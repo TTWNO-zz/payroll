@@ -29,12 +29,12 @@
 					<div class="red">*</div>
 					<div id="question">
 						<span id="IN">
-							<input required class="bigButton" type="radio" name="io" value="IN"/>
-							<label>IN</label>
+							<input id="buttonIN" required class="bigButton" type="radio" name="io" value="IN"/>
+							<label for="buttonIN" class="labelButton">IN</label>
 						</span>
 						<span id="OUT">
-							<label>OUT</label>
-							<input required class="bigButton" type="radio" name="io" value="OUT"/>
+							<input id="buttonOUT" required class="bigButton" type="radio" name="io" value="OUT"/>
+							<label for="buttonOUT" class="labelButotn">OUT</label>
 						</span>
 					</div>
 					<br><br>

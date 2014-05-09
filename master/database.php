@@ -1,10 +1,12 @@
 <?php
-	require '../php/mysql.php';
-	require '../php/payrol/vars.php';
-	require '../php/timezone.php';
-	require '../php/parse/parseMySQL.php';
-	require '../php/validateString.php';
+	require '../../../php/vars.php';
+	require "$root/php/mysql.php";
+	require "$root/php/payrol/vars.php";
+	require "$root/php/timezone.php";
+	require "$root/php/parse/parseMySQL.php";
+	require "$root/php/validateString.php";
 
+	ini_set("display_errors", "Off");
 	function dieWithMessage($message, $displayMessage, $back){
 		echo("<script>alert('".$message."')</script>"); echo($displayMessage);
 		if($back){ 
@@ -13,10 +15,10 @@
 	 	}
 	}	
 	if(!$_POST['io']){
-		dieWithMessage("Must sign in or out","Failed: io error",true);
+		dieWithMessage("Must sign in or out","Failed: no IN/OUT specified",true);
 	}
 	if(!$_POST['name']){
-		dieWithMessage("Must provide name","Failed: name error",true);
+		dieWithMessage("Must provide name","Failed: no name",true);
 	}
 	
 	$name = validate($_POST['name']);
@@ -55,6 +57,10 @@
 		 	    LIMIT 1");
 	$mysqlto = new parseMySQL($db->getResult());
 	$e =$mysqlto->toList("hour","minute","io");
+	if ($e['io'][0]==$io) {
+		$lowerIO = strtolower($io);
+		echo "<script>var conf=confirm(\"Are you sure you want to sign $lowerIO\\nYou did this last time!\");if (conf==true){}else{window.history.back();}</script>";
+	}
 	$hInt = intval(date("H"));
 	$mInt = intval(date("i"));
 	$prevHour = intval($e['hour'][0]);
