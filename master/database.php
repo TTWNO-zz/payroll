@@ -1,5 +1,5 @@
 <?php
-	require '../../../php/vars.php';
+	require '/var/www/php/vars.php';
 	require "$root/php/mysql.php";
 	require "$root/php/payrol/vars.php";
 	require "$root/php/timezone.php";
