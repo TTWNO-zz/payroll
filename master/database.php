@@ -9,11 +9,11 @@
 	ini_set("display_errors", "Off");
 	function dieWithMessage($message, $displayMessage, $back){
 		echo("<script>alert('".$message."')</script>"); echo($displayMessage);
-		if($back){ 
+		if($back){
 			echo("<script>window.history.back()</script>");
 	 		die();
 	 	}
-	}	
+	}
 	if(!$_POST['io']){
 		dieWithMessage("Must sign in or out","Failed: no IN/OUT specified",true);
 	}
