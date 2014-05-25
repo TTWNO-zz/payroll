@@ -41,7 +41,7 @@
 	`unixTimestamp` INT(8) NOT NULL,
 	`date` VARCHAR(30) NOT NULL,
 	`io` VARCHAR(3) NOT NULL,
-	`notes` VARCHAR(150) NOT NULL,
+	`notes` VARCHAR(700) NOT NULL,
 	`sID` INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	`hour` INT(2) NOT NULL,
 	`minute` INT(2) NOT NULL,
@@ -113,7 +113,7 @@
 		$db->query($x);
 		if(!$db->getResult()){
 			$correctQuerys++;
-			echo "<p style='color:red;font-size:50px;'>Error: Contact Tait he knows what it means: </p>";
+			echo "<p style='color:red;font-size:50px;'>Error: <a href=\"mailto:taitskywalker@gmail.com\">Contact Tait</a> he knows what it means: </p>";
 			echo "<br><br>On query: $correctQuerys/$totalQuerys ".$x."<br>var_dump: ";
 			echo "E: $db->error()";
 			echo "CE: $db->connectError()";

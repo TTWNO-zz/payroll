@@ -108,7 +108,7 @@
 			</select>
 			<br>
 			<label>Name: </label>
-			<input type="text" placeholder="Name" name="name" value=<?php echo "\"$sname\"" ?> />
+			<input type="text" placeholder="Name" name="name" value=<?php echo "\"$name\""?>/>
 			<br>
 			<label>From:</label>
 			<input type="text" placeholder="Start date" name="startDate" value=<?php echo date("Y-m-d", strtotime("-2 weekss"))?> />
