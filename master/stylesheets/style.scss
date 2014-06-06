@@ -1,6 +1,7 @@
 $button-pressed: #999999;
 $button-not-pressed: #e7e7e7;
 $font-family: Arial;
+$questionair-color: #F0F0F0;
 *{
 	/* applys to all elements */
 	padding:0px;
@@ -30,7 +31,6 @@ textarea{
 	margin-right:20%;
 	margin-left:20%;
 	margin-top:0px;
-	background:#F0F0F0;
 	min-height:300px;
 	width:50%;
 	position:absolute;
@@ -40,6 +40,9 @@ textarea{
 	border-right:1px solid black;
 	border-left:1px solid black;
 	border-top:none;
+	/*background stuff*/
+	background: $questionair-color url("../image/beta.png") no-repeat left top;
+	background-size: 4em 4.6em;
 }
 #stuff > *{
 	/* applys to eveything inside #suff div */
