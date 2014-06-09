@@ -1,11 +1,11 @@
 <?php
 	//require these files from /var/www/php/
-	require 'resouces/php/vars.php';
-	require "$resouces/php/mysql.php";
-	require "$resouces/php/payroll/vars.php";
-	require "$resouces/php/timezone.php";
-	require "$resouces/php/parse/parseMySQL.php";
-	require "$resouces/php/validateString.php";
+	require "./resouces/php/vars.php";
+	require "./resouces/php/mysql.php";
+	require "./resouces/php/payroll/vars.php";
+	require "./resouces/php/timezone.php";
+	require "./resouces/php/parse/parseMySQL.php";
+	require "./resouces/php/validateString.php";
 
 	/*
 	*	No errros will be shown unless it is set to "On"

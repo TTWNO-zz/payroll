@@ -2,12 +2,12 @@
 <?php
 	// ini_set("display_errors",0);
 	require '../resouces/php/vars.php';
-	require "$resouces/php/mysql.php";
-	require "$resouces/php/payroll/vars.php";
-	require "$resouces/php/validString.php";
-	require "$resouces/php/debug.php";
-	require "$resouces/php/parse/parseMySQL.php";
-	require "$resouces/php/timezone.php";
+	require "../resouces/php/mysql.php";
+	require "../resouces/php/payroll/vars.php";
+	require "../resouces/php/validString.php";
+	require "../resouces/php/debug.php";
+	require "../resouces/php/parse/parseMySQL.php";
+	require "../resouces/php/timezone.php";
 
 	if(isset($_GET['d'])){
 		if(is_numeric($_GET['d'])){
