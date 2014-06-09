@@ -1,6 +1,6 @@
 <?php
 	//require these files from /var/www/php/
-	require '/var/www/php/vars.php';
+	require './resouces/php/vars.php';
 	require "$root/php/mysql.php";
 	require "$root/php/payroll/vars.php";
 	require "$root/php/timezone.php";
