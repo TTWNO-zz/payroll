@@ -1,12 +1,23 @@
 <?php
+	//require these files from /var/www/php/
 	require '/var/www/php/vars.php';
 	require "$root/php/mysql.php";
-	require "$root/php/payrol/vars.php";
+	require "$root/php/payroll/vars.php";
 	require "$root/php/timezone.php";
 	require "$root/php/parse/parseMySQL.php";
 	require "$root/php/validateString.php";
 
+	/*
+	*	No errros will be shown unless it is set to "On"
+	*/
 	ini_set("display_errors", "Off");
+
+	/*
+	*	This will send a javascript error message with html
+	*	back to the client from php to javascript that then adds it
+	*	to the webpage to be executed.
+	*	See js/javascript.js
+	*/
 	function dieWithMessage($message, $displayMessage, $back){
 		echo("<script>alert('".$message."')</script>"); echo($displayMessage);
 		if($back){
@@ -26,6 +37,7 @@
 	$notes = validate($_POST['notes']);
 	$dateF = date("M d (D)");
 
+	// Create database $db with variables imported from $root/php/payroll/vars.php
 	$db = new MySQLDatabase($myhost,
 				$myusername,
 				$mypassword,
