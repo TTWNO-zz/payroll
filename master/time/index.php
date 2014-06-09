@@ -3,7 +3,7 @@
 	// ini_set("display_errors",0);
 	require '../resouces/php/vars.php';
 	require "$root/php/mysql.php";
-	require "$root/php/payrol/vars.php";
+	require "$root/php/payroll/vars.php";
 	require "$root/php/validString.php";
 	require "$root/php/debug.php";
 	require "$root/php/parse/parseMySQL.php";
