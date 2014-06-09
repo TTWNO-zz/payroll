@@ -3,4 +3,5 @@
 	$myusername = "root";
 	$mypassword = "HTML%!HTML$";
 	$root = "/var/www";
+	$resouces = "resouces";
 ?>
