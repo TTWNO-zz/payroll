@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <?php
-	// ini_set("display_errors",0);
+	/*
+	*	Make this true on testing, false on prodection!
+	*/
+	ini_set("display_errors",0);
 	require '../resouces/php/vars.php';
 	require "../resouces/php/mysql.php";
 	require "../resouces/php/payroll/vars.php";
