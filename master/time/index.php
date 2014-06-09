@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 	// ini_set("display_errors",0);
-	require '../../../../php/vars.php';
+	require '../resouces/php/vars.php';
 	require "$root/php/mysql.php";
 	require "$root/php/payrol/vars.php";
 	require "$root/php/validString.php";
