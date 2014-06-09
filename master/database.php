@@ -26,7 +26,7 @@
 	 	}
 	}
 	if(!$_POST['io']){
-		dieWithMessage("Must sign in or out","Failed: no IN/OUT specified",true);
+		dieWithMessage("Must sign in or out","Failed: no in or out specified",true);
 	}
 	if(!$_POST['name']){
 		dieWithMessage("Must provide name","Failed: no name",true);
