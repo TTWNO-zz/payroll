@@ -75,20 +75,27 @@
 				echo $r;
 				break;
 			case "v":
-				echo "Not yet fully implemented!";
+				$mi="minutes in";
+				$mo="minutes out";
+				$hi="hours in";
+				$ho="hours out";
+				$d="day";
+				$n="notes";
 				$db->query("SELECT 
-								DATE(FROM_UNIXTIME(`unixTimestamp`)) as d,
-								SUM(`minutesIN`) as mi,
-								SUM(`minutesOUT`) as mo,
-								SUM(`hoursIN`) as hi,
-								SUM(`hoursOUT`) as ho,
+								DATE(FROM_UNIXTIME(`unixTimestamp`)) as $d,
+								SUM(`minutesIN`) as `$mi`,
+								SUM(`minutesOUT`) as `$mo`,
+								SUM(`hoursIN`) as `$hi`,
+								SUM(`hoursOUT`) as `$ho`,
 								`notes` as notes
 							FROM `$name`
-							GROUP BY d");
+							GROUP BY $d");
 				$parseSQL->setResult($db->getResult());
-				$e = $parseSQL->toHTML("mi","mo","d","hi","ho","notes");
+				$e = $parseSQL->toHTML("$d","$mi","$mo","$hi","$ho","$n");
 				echo "$e";
 				break;
+			case "s":
+				$table = $db->query("SELECT ");
 			default:
 				die("ERROR!");
 		}
@@ -108,6 +115,7 @@
 				<option value="m">Get Minutes</option>
 				<option value="a">Get All</option>
 				<option value="v">Validate Manualy</option>
+				<option value="s">Super Awesome Mode</option>
 			</select>
 			<br>
 			<label>Name: </label>
