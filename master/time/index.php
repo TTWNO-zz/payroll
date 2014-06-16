@@ -1,29 +1,56 @@
 <!DOCTYPE html>
 <?php
 	/*
-	*	Make this true on testing, false on prodection!
+	*	True on testing, false on prodection!
 	*/
 	ini_set("display_errors",0);
+	/* 
+	*	external variables $myhost, $myusername, $mypassword,
+	*	$mydatabase 
+	*/
 	require '../resouces/php/vars.php';
+	// MySQLDatabase class
 	require "../resouces/php/mysql.php";
+	/* 	
+	*	overriding variables for specific project $myhost
+	*		$myusername $mypassword.
+	*   Adds variable $mydatabase becuase there is only one database required
+	*   	for this project.
+	*/
 	require "../resouces/php/payroll/vars.php";
+	// adds a method to use escape strings
 	require "../resouces/php/validString.php";
+	// debug function
 	require "../resouces/php/debug.php";
+	// parse mysql to HTML tabe, or PHP 'List'
 	require "../resouces/php/parse/parseMySQL.php";
+	// recalibrate timezone for this script
 	require "../resouces/php/timezone.php";
+	
+	/** VARIABLE ASSIGNMENT **/
+	// current date in below format
+	$date = date("Y-m-d 23:59:59");
+	// two weeks ago in current format
+	$twoWeeksBeforeDate = date("Y-m-d 00:00:00",strtotime("-2 weeks -1 day"));
 
+	// 1st date to get in between
+	$startDate = $_POST['startDate'];
+
+	// 2nd date to get in between
+	$endDate = $_POST['endDate'];
+
+
+
+	// debuging can be set as d through the URL
 	if(isset($_GET['d'])){
 		if(is_numeric($_GET['d'])){
 			$DEBUG_LEVEL = $_GET['d'];
 			echo "debug level set to $DEBUG_LEVEL";
-		}else{
-			$DEBUG_LEVEL = 0;
-			echo "Debug level set to 0";
-		}
+		}else{}
 	}else{
 		$DEBUG_LEVEL = 0;
 	}
-
+	// n (name) can be set through url as well
 	if(isset($_GET['n'])){
 		$name = urldecode($_GET['n']);
 		$sname = $name;
@@ -50,6 +77,12 @@
 								$myusername,
 								$mypassword,
 								$mydatabase);
+		$mi="minutes in";
+		$mo="minutes out";
+		$hi="hours in";
+		$ho="hours out";
+		$d="day";
+		$n="notes";
 		switch($var) {
 			case "h":
 				$db->query("SELECT SUM(`hoursIN`) AS Hours FROM `$name` WHERE `io` = \"OUT\"");
@@ -75,12 +108,6 @@
 				echo $r;
 				break;
 			case "v":
-				$mi="minutes in";
-				$mo="minutes out";
-				$hi="hours in";
-				$ho="hours out";
-				$d="day";
-				$n="notes";
 				$db->query("SELECT 
 								DATE(FROM_UNIXTIME(`unixTimestamp`)) as $d,
 								SUM(`minutesIN`) as `$mi`,
@@ -95,7 +122,19 @@
 				echo "$e";
 				break;
 			case "s":
-				$table = $db->query("SELECT ");
+				$unsummedTable = $db->query("SELECT *
+									 FROM `$name`
+									 WHERE `timestamp`
+									 BETWEEN \"$startDate\" AND \"$endDate\"");
+				$summmedTable = $db->query("SELECT 
+												DATE(FROM_UNIXTIME(`unixTimestamp`)) as $d,
+												SUM(`minutesIN`) as `$mi`,
+												SUM(`minutesOUT`) as `$mo`,
+												SUM(`hoursIN`) as `$hi`,
+												SUM(`hoursOUT`) as `$ho`
+											FROM `$name`
+											GROUP BY $d");
+				//work in progress
 			default:
 				die("ERROR!");
 		}
@@ -122,10 +161,10 @@
 			<input type="text" placeholder="Name" name="name" value=<?php echo "\"$name\""?>/>
 			<br>
 			<label>From:</label>
-			<input type="text" placeholder="Start date" name="startDate" value=<?php echo date("Y-m-d", strtotime("-2 weekss"))?> />
+			<input type="text" placeholder="Start date" name="startDate" value=<?php echo "\"$twoWeeksBeforeDate\""?> />
 			<br>
 			<label>To:</label>
-			<input type="text" placeholder="End date" name="endDate" value=<?php echo date("Y-m-d")?> />
+			<input type="text" placeholder="End date" name="endDate" value=<?php echo "\"$date\""?> />
 			<br>
 			<button type="submit">Send</button>
 		</form>
