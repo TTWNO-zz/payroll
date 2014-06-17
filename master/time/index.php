@@ -29,17 +29,18 @@
 	
 	/** VARIABLE ASSIGNMENT **/
 	// current date in below format
+	$uDate = time();
 	$date = date("Y-m-d 23:59:59");
 	// two weeks ago in current format
 	$twoWeeksBeforeDate = date("Y-m-d 00:00:00",strtotime("-2 weeks -1 day"));
 
 	// 1st date to get in between
 	$startDate = $_POST['startDate'];
+	$uStartDate = new DateTIme($startDate);
 
 	// 2nd date to get in between
 	$endDate = $_POST['endDate'];
-
-
+	$uEndDate = new DateTime($endDate);
 
 	// debuging can be set as d through the URL
 	if(isset($_GET['d'])){
@@ -122,19 +123,22 @@
 				echo "$e";
 				break;
 			case "s":
-				$unsummedTable = $db->query("SELECT *
-									 FROM `$name`
-									 WHERE `timestamp`
-									 BETWEEN \"$startDate\" AND \"$endDate\"");
-				$summmedTable = $db->query("SELECT 
-												DATE(FROM_UNIXTIME(`unixTimestamp`)) as $d,
-												SUM(`minutesIN`) as `$mi`,
-												SUM(`minutesOUT`) as `$mo`,
-												SUM(`hoursIN`) as `$hi`,
-												SUM(`hoursOUT`) as `$ho`
-											FROM `$name`
-											GROUP BY $d");
+				$htmlOutput = "";
+				$intvalue = $uStartDate->diff($uEndDate);
+				// int value of days in between $startDate and $endDate
+				$days = intval($intvalue->format("%a"));
+				// per day between $starDate and $endDate
+				for ($d=0; $d < $days; $d++) { 
+					$dm = $d-1;
+					echo date("Y-m-d 00:00:00",strtotime("-$dm days"));
+					echo "<br>";
+					echo date("Y-m-d 00:00:00",strtotime("-$d days"));
+					echo "<br><br>";
+				}
+
+				$sums = $db->getResult();
 				//work in progress
+				break;
 			default:
 				die("ERROR!");
 		}
