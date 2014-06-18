@@ -57,47 +57,30 @@
 	`sID` INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	`hour` INT(2) NOT NULL,
 	`minute` INT(2) NOT NULL,
-	`hoursIN` INT(2) NOT NULL,
-	`minutesIN` INT(2) NOT NULL,
-	`hoursOUT` INT(2) NOT NULL,
-	`minutesOUT` INT(2) NOT NULL
+	`time_in` INT(2) NOT NULL,
+	`time_out` INT(2) NOT NULL
 	)";
 
 	$db->query("SELECT *
 		  		FROM `$name`
 		  		ORDER BY `timestamp` DESC
 		 	    LIMIT 1");
-	$mysqlto = new parseMySQL($db->getResult());
-	$e =$mysqlto->toList("hour","minute","io");
+	$mysql = new parseMySQL($db->getResult());
+	$e = $mysql->toList("io","unixTimestamp");
 	if ($e['io'][0]==$io) {
 		$lowerIO = strtolower($io);
 		echo "<script>var conf=confirm(\"Are you sure you want to sign $lowerIO\\nYou did this last time!\");if (conf==true){}else{window.history.back();}</script>";
 	}
-	$hInt = intval(date("H"));
-	$mInt = intval(date("i"));
-	$prevHour = intval($e['hour'][0]);
-	$prevMinute = intval($e['minute'][0]);
-	$h = $hInt-$prevHour;
-	$m = $mInt-$prevMinute;
-	// if the current hour is equal to
-	// the current hour - the previous hour
-	// if the previous hour = NULL then = 0
-	if($h == $hInt){
-		$h = 0;
-		$m = 0;
-	}
-	if($m < 0){
-		$h -= 1;
-		$m += 60;
-	}
-	if($h < 0){
-		$h+=24;
-	}
+	
+	/*Calculate time difference*/
 	if(isset($e['io'][0])){
 		$ioSuf = $e['io'][0];
 	}else{
 		$ioSuf = "OUT";
 	}
+	$ioSuf = strtolower($ioSuf);
+	$time_diff = intval(time())-$e['unixTimestamp'][0];
+
 	$querys[2] = "INSERT INTO `".$name."`
 		   (`unixTimestamp`,
 		    `date`,
@@ -105,8 +88,7 @@
 		    `notes`,
 		    `hour`,
 		    `minute`,
-		    `hours$ioSuf`,
-		    `minutes$ioSuf`
+		    `time_$ioSuf`
 		   ) VALUES (
 		   		'".date("U")."'				,
 		   		'".date("l F jS Y")."'      ,
@@ -114,8 +96,7 @@
 		   		'$notes'					,
 		   		'".date("H")."'				,
 		   		'".date("i")."'				,
-		   		'".$h."' 					,
-		   		'".$m."'					
+		   		'".$time_diff."'
 		   )";
 	
 
