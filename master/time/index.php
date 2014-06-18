@@ -89,13 +89,13 @@
 				$db->query("SELECT SUM(`hoursIN`) AS Hours FROM `$name` WHERE `io` = \"OUT\"");
 				$parse = new parseMySQL($db->getResult());
 				$a = $parse->toList("Hours");
-				echo $a['Hours'][0];
+				$htmlOutput = $a['Hours'][0];
 				break;
 			case "m":
 				$db->query("SELECT SUM(`minutesIN`) AS Minutes FROM `$name` WHERE `io` = \"OUT\"");
 				$parse = new parseMySQL($db->getResult());
 				$a = $parse->toList("Minutes");
-				echo $a['Minutes'][0];
+				$htmlOutput = $a['Minutes'][0];
 				break;
 			case "a":
 				$db->query("SELECT SUM(`hoursIN`) AS Hours FROM `$name`");
@@ -106,7 +106,7 @@
 				$Ma = $parse->toList("Minutes");
 				fixNumbers();
 				$r = $Ha['Hours'][0].":".$Ma['Minutes'][0];
-				echo $r;
+				$htmlOutput = $r;
 				break;
 			case "v":
 				$db->query("SELECT 
@@ -120,23 +120,23 @@
 							GROUP BY $d");
 				$parseSQL->setResult($db->getResult());
 				$e = $parseSQL->toHTML("$d","$mi","$mo","$hi","$ho","$n");
-				echo "$e";
+				$htmlOutput = $e;
 				break;
 			case "s":
+				// the HTML that will be output at the top of <body>
 				$htmlOutput = "";
-				$intvalue = $uStartDate->diff($uEndDate);
-				// int value of days in between $startDate and $endDate
-				$days = intval($intvalue->format("%a"));
-				// per day between $starDate and $endDate
-				for ($d=0; $d < $days; $d++) { 
-					$dm = $d-1;
-					echo date("Y-m-d 00:00:00",strtotime("-$dm days"));
-					echo "<br>";
-					echo date("Y-m-d 00:00:00",strtotime("-$d days"));
-					echo "<br><br>";
-				}
-
-				$sums = $db->getResult();
+				$db->query("SELECT
+							`date`,
+							`unixTimestamp`,
+							`notes`,
+							IF(HOUR(SEC_TO_TIME(SUM(TIMEDIFF(time_out,time_in))))>8,
+						  		 SEC_TO_TIME(DATE_SUB(TIMEDIFF(time_in,time_out), INTERVAL '08:00:00' HOUR_SECOND)),
+						  		 0) as overtime,
+							SEC_TO_TIME(SUM(TIMEDIFF(time_in,time_out))) as normal_hours
+							FROM `Tait Hoyem`
+							ORDER BY `date`");
+				$parseSQL->setResult($db->getResult());
+				$htmlOutput = $parseSQL->toHTML("date","normal_hours","overtime");
 				//work in progress
 				break;
 			default:
@@ -152,6 +152,10 @@
 		<link rel="stylesheet" href="style.css"/>
 	</head>
 	<body>
+		<?php
+			/*Prints any html ouput there may be!*/
+			echo $htmlOutput;
+		?>
 		<form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?> method="POST" accept-charset="utf-8">
 			<select name="test">
 				<option value="h">Get Hours</option>
