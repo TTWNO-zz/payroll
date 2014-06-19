@@ -41,7 +41,11 @@ textarea{
 	border-left:1px solid black;
 	border-top:none;
 	/*background stuff*/
-	background: $questionair-color url("../image/beta.png") no-repeat left top;
+	/* Commented because I have been told Total Impact Signs
+	* 	doesen't want the beta sticker
+	*background: $questionair-color url("../image/beta.png") no-repeat left top;
+	*/
+	background-color: $questionair-color;
 	background-size: 4em 4.6em;
 }
 #stuff > *{
