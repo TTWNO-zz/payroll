@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/style.css"/>
+		<link rel="stylesheet" href="stylesheets/main.css"/>
 		<link rel="stylesheet" href=<?php echo "\"stylesheets/$sname_no_space.css\"";?>/>
 		<script src="js/jQuery.js"></script>
 		<script src="js/javascript.js"></script>
@@ -19,7 +19,7 @@
 		<div id="website">
 		<div id="stuff">
 			<h1 id="header">
-				Sign in/out for <?php echo($sname)?>
+				Sign in / out for <?php echo($sname)?>
 			</h1>
 			<p class="red">* Required</p>
 			<form action="database.php" autocomplete="true" method="POST">
