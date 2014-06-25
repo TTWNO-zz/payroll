@@ -136,7 +136,7 @@
 	SEC_TO_TIME(SUM(TIMEDIFF(time_out,time_in))) as normal_hours
 FROM `$name`
 WHERE `timestamp` BETWEEN '$startDate' AND '$endDate'
-ORDER BY `date`");
+GROUP BY `date`");
 				$parseSQL->setResult($db->getResult());
 				$htmlOutput = $parseSQL->toHTML("date","normal_hours","overtime");
 				//work in progress
