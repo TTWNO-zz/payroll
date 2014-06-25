@@ -130,10 +130,10 @@
 	`date`,
 	`unixTimestamp`,
 	`notes`,
-	IF(HOUR(SEC_TO_TIME(SUM(TIMEDIFF(time_out,time_in))))>8,
-  		 DATE_SUB(TIMEDIFF(time_in,time_out), INTERVAL '08:00:00' HOUR_SECOND),
+	IF(HOUR(SEC_TO_TIME(SUM(TIMEDIFF(time_in,time_out))))>8,
+  		 DATE_SUB(TIMEDIFF(time_out,time_in), INTERVAL '08:00:00' HOUR_SECOND),
   		 0) as overtime,
-	SEC_TO_TIME(SUM(TIMEDIFF(time_in,time_out))) as normal_hours
+	SEC_TO_TIME(SUM(TIMEDIFF(time_out,time_in))) as normal_hours
 FROM `$name`
 WHERE `timestamp` BETWEEN '$startDate' AND '$endDate'
 ORDER BY `date`");
