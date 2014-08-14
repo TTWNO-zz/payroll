@@ -100,7 +100,7 @@
 		for ($i=0; $i < $interval; $i++) { 
 			$day = date("Y-m-d",strtotime("-$i days"));
 			$result = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
-										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>8,
+										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>=8,
           										SEC_TO_TIME(SUM(time_in)-28800),
           										'00:00:00') AS `Overtime`
 										   FROM `$name`
@@ -112,7 +112,7 @@
 		echo '<br>';
 		// Totals
 		$result = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
-										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>8,
+										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>=8,
           										SEC_TO_TIME(SUM(time_in)-28800),
           										'00:00:00') AS `Overtime`
 										   FROM `$name`
