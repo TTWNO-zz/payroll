@@ -102,24 +102,30 @@
 			$result = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
 										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>=8,
           										SEC_TO_TIME(SUM(time_in)-28800),
-          										'00:00:00') AS `Overtime`
+          										'00:00:00') AS `Overtime`,
+										   `date`
 										   FROM `$name`
 										   WHERE `timestamp` BETWEEN '$day 00:00:00' AND '$day 23:59:59'
-										   GROUP BY `date`");
+										   GROUP BY `date`
+										   ORDER BY `timestamp` DESC");
+										   
 			$array = array2table($result->getArray());
-			echo("<button class=\"specsButton\">Details $day</button><br><div class=\"specs\">$array</div>");
+			echo("<div><button class=\"specsButton\">Details $day</button><div class=\"specs\">$array</div></div>");
 		}
 		echo '<br>';
 		// Totals
 		$result = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
 										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>=8,
           										SEC_TO_TIME(SUM(time_in)-28800),
-          										'00:00:00') AS `Overtime`
+          										'00:00:00') AS `Overtime`,
+										`date`
 										   FROM `$name`
 										   WHERE `timestamp` BETWEEN '$startDate' AND '$endDate'
-										   GROUP BY `date`");
+										   GROUP BY `date`
+										   ORDER BY `timestamp` DESC");
+										   
 		$array = array2table($result->getArray());
-		echo("<button class=\"specsButton\" id=\"totals\">Grand Totals</button><br><div class=\"specs\">$array</div>");
+		echo("<div><button class=\"specsButton\" id=\"totals\">Grand Totals</button><div class=\"specs\">$array</div></div>");
 		// Closing
 		$rs->close();
 		$db->close();
