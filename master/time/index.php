@@ -3,14 +3,21 @@
 	/*
 	*	True on testing, false on prodection!
 	*/
-	ini_set("display_errors",0);
+	ini_set("display_errors",1);
 	/* 
 	*	external variables $myhost, $myusername, $mypassword,
 	*	$mydatabase 
 	*/
 	require '../resouces/php/vars.php';
-	// MySQLDatabase class
-	require "../resouces/php/mysql.php";
+	
+	/*
+		ADODB, Replacement for past system of custum files,
+		functions are now well documented, and understood!	
+	*/
+	include('../resouces/adodb5/adodb.inc.php');
+	include('../resouces/adodb5/tohtml.inc.php');
+	include('../resouces/adodb5/adodb-exceptions.inc.php');
+
 	/* 	
 	*	overriding variables for specific project $myhost
 	*		$myusername $mypassword.
@@ -18,19 +25,23 @@
 	*   	for this project.
 	*/
 	require "../resouces/php/payroll/vars.php";
-	// adds a method to use escape strings
-	require "../resouces/php/validString.php";
+
+	// PHP list to HTML table function
+	require "./array2table.php";
+
+	/* adds a method to use escape strings
+		Old: require "../resouces/php/validString.php";
+		Replaced by ADONewConnection->qstr($str)
+	*/
 	// debug function
 	require "../resouces/php/debug.php";
-	// parse mysql to HTML tabe, or PHP 'List'
-	require "../resouces/php/parse/parseMySQL.php";
 	// recalibrate timezone for this script
 	require "../resouces/php/timezone.php";
 	
 	/** VARIABLE ASSIGNMENT **/
 	// current date in below format
 	$uDate = time();
-	$date = date("Y-m-d 23:59:59");
+	$date = date("Y-m-d 00:00:00",strtotime("+1 day"));
 	// two weeks ago in current format
 	$twoWeeksBeforeDate = date("Y-m-d 00:00:00",strtotime("-2 weeks -1 day"));
 
@@ -70,110 +81,73 @@
 			}
 		}else{return;}
 	}
-	$parseSQL = new parseMySQL("");
-	if(isset($_POST['test'])){
-		$var = $_POST['test'];
+	if(isset($_POST['mode'])){
+		$htmlOutput = "";
+		$mode = $_POST['mode'];
 		$name = $_POST['name'];
-		$db = new MySqlDatabase($myhost,
-								$myusername,
-								$mypassword,
-								$mydatabase);
-		$mi="minutes in";
-		$mo="minutes out";
-		$hi="hours in";
-		$ho="hours out";
-		$d="day";
-		$n="notes";
-		switch($var) {
-			case "h":
-				$db->query("SELECT SUM(`hoursIN`) AS Hours FROM `$name` WHERE `io` = \"OUT\"");
-				$parse = new parseMySQL($db->getResult());
-				$a = $parse->toList("Hours");
-				$htmlOutput = $a['Hours'][0];
-				break;
-			case "m":
-				$db->query("SELECT SUM(`minutesIN`) AS Minutes FROM `$name` WHERE `io` = \"OUT\"");
-				$parse = new parseMySQL($db->getResult());
-				$a = $parse->toList("Minutes");
-				$htmlOutput = $a['Minutes'][0];
-				break;
-			case "a":
-				$db->query("SELECT SUM(`hoursIN`) AS Hours FROM `$name`");
-				$parse = new parseMySQL($db->getResult());
-				$Ha = $parse->toList("Hours");
-				$db->query("SELECT SUM(`minutesIN`) AS Minutes FROM `$name`");
-				$parse->setResult($db->getResult());
-				$Ma = $parse->toList("Minutes");
-				fixNumbers();
-				$r = $Ha['Hours'][0].":".$Ma['Minutes'][0];
-				$htmlOutput = $r;
-				break;
-			case "v":
-				$db->query("SELECT 
-								DATE(FROM_UNIXTIME(`unixTimestamp`)) as $d,
-								SUM(`minutesIN`) as `$mi`,
-								SUM(`minutesOUT`) as `$mo`,
-								SUM(`hoursIN`) as `$hi`,
-								SUM(`hoursOUT`) as `$ho`,
-								`notes` as notes
-							FROM `$name`
-							GROUP BY $d");
-				$parseSQL->setResult($db->getResult());
-				$e = $parseSQL->toHTML("$d","$mi","$mo","$hi","$ho","$n");
-				$htmlOutput = $e;
-				break;
-			case "s":
-				// the HTML that will be output at the top of <body>
-				$htmlOutput = "";
-				// runs mysql query on database
-				$db->query("SELECT
-	`date`,
-	`unixTimestamp`,
-	`notes`,
-	IF(HOUR(SEC_TO_TIME(SUM(TIMEDIFF(time_in,time_out))))>8,
-  		 DATE_SUB(TIMEDIFF(time_out,time_in), INTERVAL '08:00:00' HOUR_SECOND),
-  		 0) as overtime,
-	SEC_TO_TIME(SUM(TIMEDIFF(time_out,time_in))) as normal_hours
-FROM `$name`
-WHERE `timestamp` BETWEEN '$startDate' AND '$endDate'
-GROUP BY `date`");
-				$parseSQL->setResult($db->getResult());
-				$htmlOutput = $parseSQL->toHTML("date","normal_hours","overtime");
-				//work in progress
-				break;
-			default:
-				die("ERROR!");
+		try{
+			$db = ADONewConnection('mysqli://root:HTML%!HTML$@localhost/log?');
 		}
+		catch(Exception $e){
+			//print_r($e);
+		}
+		$db->debug = false;
+		$rs = $db->Execute("SELECT * FROM `$name` WHERE `timestamp` BETWEEN '$startDate' AND '$endDate'");
+		// Printing
+		rs2html($rs,'border=2');
+		$dateDiff = date_diff(date_create($endDate),date_create($startDate));
+		$interval = $dateDiff->format("%a");
+		for ($i=0; $i < $interval; $i++) { 
+			$day = date("Y-m-d",strtotime("-$i days"));
+			$result = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
+										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>8,
+          										SEC_TO_TIME(SUM(time_in)-28800),
+          										'00:00:00') AS `Overtime`
+										   FROM `$name`
+										   WHERE `timestamp` BETWEEN '$day 00:00:00' AND '$day 23:59:59'
+										   GROUP BY `date`");
+			$array = array2table($result->getArray());
+			echo("<button class=\"specsButton\">Details $day</button><br><div class=\"specs\">$array</div>");
+		}
+		echo '<br>';
+		// Totals
+		$result = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
+										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>8,
+          										SEC_TO_TIME(SUM(time_in)-28800),
+          										'00:00:00') AS `Overtime`
+										   FROM `$name`
+										   WHERE `timestamp` BETWEEN '$startDate' AND '$endDate'
+										   GROUP BY `date`");
+		$array = array2table($result->getArray());
+		echo("<button class=\"specsButton\" id=\"totals\">Grand Totals</button><br><div class=\"specs\">$array</div>");
+		// Closing
+		$rs->close();
 		$db->close();
 	}else{}
 ?>
-<!DOCTYPE html>
 <html>
 	<head>
-		<script type="text/javascript" src="javascript.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
 		<link rel="stylesheet" href="style.css"/>
 	</head>
 	<body>
-		<?php
-			/*Prints any html ouput there may be!*/
-			echo $htmlOutput;
-		?>
 		<form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?> method="POST" accept-charset="utf-8">
-			<select name="test">
-				<option value="h">Get Hours</option>
-				<option value="m">Get Minutes</option>
-				<option value="a">Get All</option>
-				<option value="v">Validate Manualy</option>
+			<select name="mode">
+				<option value="h" disabled="">Get Hours</option>
+				<option value="m" disabled="">Get Minutes</option>
+				<option value="a" disabled="">Get All</option>
+				<option value="v" disabled="">Validate Manualy</option>
 				<option value="s">Super Awesome Mode</option>
 			</select>
 			<br>
 			<label>Name: </label>
-			<input type="text" placeholder="Name" name="name" value=<?php echo "\"$name\""?>/>
+			<input type="text" placeholder="Name" name="name" value=<?php echo("\"$sname\"") ?> />
 			<br>
-			<label>From:</label>
+			<label>Start:</label>
 			<input type="text" placeholder="Start date" name="startDate" value=<?php echo "\"$twoWeeksBeforeDate\""?> />
 			<br>
-			<label>To:</label>
+			<label>End:</label>
 			<input type="text" placeholder="End date" name="endDate" value=<?php echo "\"$date\""?> />
 			<br>
 			<button type="submit">Send</button>

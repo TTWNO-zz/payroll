@@ -1,10 +1,13 @@
 <?php
 	//require these files from /var/www/php/
 	require "./resouces/php/vars.php";
+	// TODO: Replacd w/ Adodb
 	require "./resouces/php/mysql.php";
 	require "./resouces/php/payroll/vars.php";
 	require "./resouces/php/timezone.php";
+	// TODO: Replace w/ Adodb
 	require "./resouces/php/parse/parseMySQL.php";
+	// TODO: Replace w/ Adodb
 	require "./resouces/php/validateString.php";
 
 	/*
@@ -38,6 +41,7 @@
 	$dateF = date("M d (D)");
 
 	// Create database $db with variables imported from $root/php/payroll/vars.php
+	// TODO: replace with ADONewConnection()
 	$db = new MySQLDatabase($myhost,
 				$myusername,
 				$mypassword,
@@ -99,7 +103,7 @@
 		   		'".$time_diff."'
 		   )";
 	
-
+	// TODO: Replace this crap-ton of code with a few lines using ADONewConnection->functions()
 	$correctQuerys = 0;
 	$totalQuerys = sizeof($querys);
 	foreach($querys as $x){
