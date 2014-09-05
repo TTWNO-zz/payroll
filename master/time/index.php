@@ -92,14 +92,22 @@
 			//print_r($e);
 		}
 		$db->debug = false;
+		?>
+		<button></button><label id="showAll">Show All</label>
+		<button></button><label id="hideAll">Hide All</label>
+		<br><br>
+		<?php
+		echo "<button class=\"specsButton\"></button><label class=\"specsLabel\">Data entries (For manual payroll) &#x25BC</label>";
 		$rs = $db->Execute("SELECT * FROM `$name` WHERE `timestamp` BETWEEN '$startDate' AND '$endDate'");
-		// Printing
-		rs2html($rs,'border=2');
+		// Manual array
+		$manArray = array2table($rs->getArray());
+		echo "<div class=\"specs\">$manArray</div><br><br>";
+
 		$dateDiff = date_diff(date_create($endDate),date_create($startDate));
 		$interval = $dateDiff->format("%a");
 		for ($i=0; $i < $interval; $i++) { 
 			$day = date("Y-m-d",strtotime("-$i days"));
-			$result = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
+			$sumResult = $db->Execute("SELECT SEC_TO_TIME(SUM(time_in)) as `Standard`,
 										   IF(HOUR(SEC_TO_TIME(SUM(time_in)))>=8,
           										SEC_TO_TIME(SUM(time_in)-28800),
           										'00:00:00') AS `Overtime`,
@@ -109,8 +117,20 @@
 										   GROUP BY `date`
 										   ORDER BY `timestamp` DESC");
 										   
+			$sumArray = array2table($sumResult->getArray());
+			$result = $db->Execute("SELECT *
+									FROM `$name`
+									WHERE `timestamp` BETWEEN '$day 00:00:00' AND '$day 23:59:59'
+									ORDER BY `timestamp` DESC");
 			$array = array2table($result->getArray());
-			echo("<div><button class=\"specsButton\">Details $day</button><div class=\"specs\">$array</div></div>");
+			if (empty($array)) {
+				// No records
+				$print = "No records from $day";
+			} else {
+				// Records found
+				$print = "Sum:<br>$sumArray<br><br>Individual entries:<br>$array";
+			}
+			echo("<div><button class=\"specsButton\"></button><label class=\"specsLabel\">Details of $day &#x25BC;</label><div class=\"specs\">$print</div></div>");
 		}
 		echo '<br>';
 		// Totals
@@ -125,7 +145,7 @@
 										   ORDER BY `timestamp` DESC");
 										   
 		$array = array2table($result->getArray());
-		echo("<div><button class=\"specsButton\" id=\"totals\">Grand Totals</button><div class=\"specs\">$array</div></div>");
+		echo("<div><button class=\"specsButton\" id=\"totalButton\"></button><label class=\"specsLabel\">Totals &#x25BC</label><div class=\"specs\" id=\"totalSpecs\">$array</div></div>");
 		// Closing
 		$rs->close();
 		$db->close();
