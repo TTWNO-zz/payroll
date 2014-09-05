@@ -7,9 +7,29 @@ tbody, th, td{
 .specsButton{
 	padding: .5px;
 	font-size: 10px;
+	background-color:#f7f7f7;
 }
-#totals{
-	padding: 5px;
-	font-size: 15px;
-	font-weight: bold;
+.specs{
+	padding-left:3%;
+}
+button
+{
+	/*Made clickable by js/main.js*/
+	display:none;
+	margin:10px;
+}
+ 
+/*
+  Change the look'n'feel of labels (which are adjacent to radiobuttons).
+  Add some margin, padding to label
+*/
+button + label
+{
+	display:inline-block;
+	padding: 4px 12px;
+	background-color: #e7e7e7;
+	border-color: #ddd;
+}
+button[type="submit"]{
+	display:block;
 }
