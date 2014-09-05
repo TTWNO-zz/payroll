@@ -1,6 +1,21 @@
 $(document).ready(function(){
 	$(".specs").hide();
-	$(".specsButton").click(function(){
-		$(this).next().toggle();
+	$('#totalSpecs').show();
+	$(".specsLabel").click(function(){
+		$(this).next('.specs').slideToggle();
 	});
+	$("#showAll").click(function(){
+		$(".specs").slideDown();
+	});
+	$("#hideAll").click(function(){
+		$(".specs").slideUp();
+	});
+	pass = localStorage['passwd'] || "poo";
+	if(pass != 'cheese'){
+		pass = prompt("Password:\n","");
+		if (pass != "cheese"){
+			window.history.back();
+		}
+		localStorage['passwd'] = pass;
+	}
 });
