@@ -42,7 +42,7 @@
 				<div id="charsleft">150 characters left</div>
 				<input type="submit" value="Submit" id="submit"/>
 			</form>
-			<button id="stats">Stats (Comming in Autumn)</button>
+			<button id="stats">Stats (Comming soon)</button>
 			</div>
 			<div id="debug">
 	
