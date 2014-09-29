@@ -118,7 +118,13 @@
 										   ORDER BY `timestamp` DESC");
 										   
 			$sumArray = array2table($sumResult->getArray());
-			$result = $db->Execute("SELECT *
+			$result = $db->Execute("SELECT
+									`timestamp`,
+									`notes`,
+									`io`,
+									`unixTimestamp`,
+									DATE_FORMAT(FROM_UNIXTIME(unixTimestamp-21600), '%H:%i:%s') as `MDT`,
+									DATE_FORMAT(FROM_UNIXTIME(unixTimestamp-25200), '%H:%i:%s') as `MST`
 									FROM `$name`
 									WHERE `timestamp` BETWEEN '$day 00:00:00' AND '$day 23:59:59'
 									ORDER BY `timestamp` DESC");
