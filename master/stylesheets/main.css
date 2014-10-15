@@ -122,3 +122,11 @@ input[type=radio]:checked + label {
 #stats{
 	padding:3px;
 }
+
+/* This displays the version number on the bottom right hand corrner */
+#version{
+	position: fixed;
+	margin: 0.5em 0.5em;
+	bottom: 0em;
+	right: 0em;
+}

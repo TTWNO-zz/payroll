@@ -44,8 +44,9 @@
 			</form>
 			<button id="stats">Stats (Comming soon)</button>
 			</div>
+			<div id="version">1.3.1</div>
 			<div id="debug">
-	
+
 			</div>
 		</div>
 	</body>

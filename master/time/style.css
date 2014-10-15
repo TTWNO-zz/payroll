@@ -4,6 +4,15 @@
 tbody, th, td{
 	padding:5px;
 }
+td:nth-child(odd),
+th:nth-child(odd)
+{
+	/*background: #CCC;*/
+	/* Hides every other table row.
+	    Just copies of same columns labeled 1, 2, 3 etc...*/
+	display: none;
+	
+}
 .specsButton{
 	padding: .5px;
 	font-size: 10px;

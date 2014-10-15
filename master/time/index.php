@@ -3,7 +3,7 @@
 	/*
 	*	True on testing, false on prodection!
 	*/
-	ini_set("display_errors",1);
+	ini_set("display_errors",0);
 	/* 
 	*	external variables $myhost, $myusername, $mypassword,
 	*	$mydatabase 
