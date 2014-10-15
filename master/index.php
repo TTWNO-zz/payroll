@@ -1,5 +1,8 @@
 <?php
 	ini_set('display_errors',0);
+
+	include('version.php');
+
 	if(isset($_GET['n'])){
 		$name = urldecode($_GET['n']);
 		$sname = str_replace("\"","",$name);
@@ -44,7 +47,7 @@
 			</form>
 			<button id="stats">Stats (Comming soon)</button>
 			</div>
-			<div id="version">1.3.1</div>
+			<div id="version"><?php echo "v$VERSION" ?></div>
 			<div id="debug">
 
 			</div>

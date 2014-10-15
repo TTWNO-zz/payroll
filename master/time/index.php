@@ -17,7 +17,7 @@
 	include('../resouces/adodb5/adodb.inc.php');
 	include('../resouces/adodb5/tohtml.inc.php');
 	include('../resouces/adodb5/adodb-exceptions.inc.php');
-
+	include('../version.php');
 	/* 	
 	*	overriding variables for specific project $myhost
 	*		$myusername $mypassword.
@@ -184,5 +184,6 @@
 			<br>
 			<button type="submit">Send</button>
 		</form>
+		<div id="version"><?php echo "v$VERSION" ?></div>
 	</body>
 </html>

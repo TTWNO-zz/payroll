@@ -1,6 +1,13 @@
 * > *{
 	font-family: Arial;
 }
+
+form{
+	padding: 0.5em;
+}
+form > *{
+	padding: 0.2em;
+}
 tbody, th, td{
 	padding:5px;
 }
@@ -20,6 +27,13 @@ th:nth-child(odd)
 }
 .specs{
 	padding-left:3%;
+	padding: 3%
+}
+.specsLabel{
+	margin: 0em 0.5em;
+}
+#totalLabel{
+	font-wieght: bold;
 }
 button
 {
