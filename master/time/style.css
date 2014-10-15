@@ -56,3 +56,10 @@ button + label
 button[type="submit"]{
 	display:block;
 }
+
+#version{
+	position: fixed;
+	bottom: 0em;
+	right: 0em;
+	margin: 0.5em;
+}
