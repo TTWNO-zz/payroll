@@ -20,6 +20,7 @@
 	</head>
 	<body>
 		<div id="website">
+			<?php next_version_notice(); ?>
 		<div id="stuff">
 			<h1 id="header">
 				Sign in / out for <?php echo($sname)?>
@@ -45,7 +46,7 @@
 				<div id="charsleft">150 characters left</div>
 				<input type="submit" value="Submit" id="submit"/>
 			</form>
-			<button id="stats">Stats (Comming soon)</button>
+			<button id="stats">Stats (Comming v2.1)</button>
 			</div>
 			<div id="version"><?php echo "v$VERSION" ?></div>
 			<div id="debug">

@@ -130,3 +130,13 @@ input[type=radio]:checked + label {
 	bottom: 0em;
 	right: 0em;
 }
+
+#update{
+	position: fixed;
+	top: 0em;
+	width: 100%;
+	background-color: #AEEEEE;
+	z-index: 1;
+	text-align: center
+}
+
