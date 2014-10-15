@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	var upArrow = '&#x25B2'
+	var dowArrow = '&#x25BC'
 	$(".specs").hide();
 	$('#totalSpecs').show();
 	$(".specsLabel").click(function(){
@@ -18,4 +20,5 @@ $(document).ready(function(){
 		}
 		localStorage['passwd'] = pass;
 	}
+	
 });
