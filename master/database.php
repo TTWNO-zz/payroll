@@ -34,7 +34,7 @@
 	if(!$_POST['name']){
 		dieWithMessage("Must provide name","Failed: no name",true);
 	}
-	
+
 	$name = validate($_POST['name']);
 	$io = validate($_POST['io']);
 	$notes = validate($_POST['notes']);
@@ -75,7 +75,7 @@
 		$lowerIO = strtolower($io);
 		echo "<script>var conf=confirm(\"Are you sure you want to sign $lowerIO\\nYou did this last time!\");if (conf==true){}else{window.history.back();}</script>";
 	}
-	
+
 	/*Calculate time difference*/
 	if(isset($e['io'][0])){
 		$ioSuf = $e['io'][0];
@@ -102,7 +102,7 @@
 		   		'".date("i")."'				,
 		   		'".$time_diff."'
 		   )";
-	
+
 	// TODO: Replace this crap-ton of code with a few lines using ADONewConnection->functions()
 	$correctQuerys = 0;
 	$totalQuerys = sizeof($querys);
@@ -118,11 +118,11 @@
 			die("<br>ERROR!");
 		}else{
 			$correctQuerys++;
-			echo "Executed succsesfuly $correctQuerys/$totalQuerys<br>";
+			echo "Executed successfully $correctQuerys/$totalQuerys<br>";
 		}
 	}
 	echo "E: ".$db->error()."<br>";
 	echo "CE: ".$db->connect_error()."<br>";
-	
+
 	$db->close();
 ?>
