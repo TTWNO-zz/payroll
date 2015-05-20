@@ -1,9 +1,12 @@
 <?php
-	ini_set('display_errors',0);
+	ini_set('display_errors',1);
+
+	include('stats.php');
 
 	include('version.php');
 
 	if(isset($_GET['n'])){
+
 		$name = urldecode($_GET['n']);
 		$sname = str_replace("\"","",$name);
 		$sname_no_space = str_replace(" ", "", $sname);
@@ -21,6 +24,9 @@
 	<body>
 		<div id="website">
 			<?php next_version_notice(); ?>
+		<div class="stats">
+			<?php //stats(); ?>
+		</div>
 		<div id="stuff">
 			<h1 id="header">
 				Sign in / out for <?php echo($sname)?>
@@ -46,7 +52,6 @@
 				<div id="charsleft">150 characters left</div>
 				<input type="submit" value="Submit" id="submit"/>
 			</form>
-			<button id="stats">Stats (Comming v2.1)</button>
 			</div>
 			<div id="version"><?php echo "v$VERSION" ?></div>
 			<div id="debug">
