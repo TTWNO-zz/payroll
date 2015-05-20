@@ -48,16 +48,6 @@
 				$mypassword,
 				$mydatabase);
 
-	$today_start = date("");
-	function stats(){
-		$query = "SELECT 
-		 					date_format(from_unixtime(`unixTimestamp`), '%l:%i %p') as `time`,
-							`IO` as `io`
-							FROM `$name`
-							WHERE
-							";
-
-	}
 	// All querys are given to the database
 	// from index 0, then 1, then 2 etc...
 
