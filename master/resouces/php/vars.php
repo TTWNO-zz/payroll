@@ -1,7 +1,7 @@
 <?php
 	$myhost = "localhost";
-	$myusername = "root";
-	$mypassword = "HTML%!HTML$";
+	$myusername = "user";
+	$mypassword = "pass";
 	$root = "/var/www";
 	$resouces = "resouces";
 ?>
